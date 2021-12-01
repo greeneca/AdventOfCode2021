@@ -1,0 +1,24 @@
+#! /usr/bin/env ruby
+
+require 'io/console'
+require 'matrix'
+require 'byebug'
+
+Dir.glob("lib/*.rb").each do |file|
+  require_relative file
+end
+
+klass_name = "D#{ARGV[0].sub("-", "P")}".to_sym
+klass_name = "#{klass_name}::#{klass_name}"
+inputFile = ARGV[1]
+
+input = File.readlines(inputFile)
+problem = Object::const_get(klass_name).new()
+start_time  = Time.now
+problem.run(input)
+end_time  = Time.now
+
+duration = (end_time - start_time)*1000
+duration = (duration *100).round / 100.0
+
+puts "Duration: #{duration}ms"
